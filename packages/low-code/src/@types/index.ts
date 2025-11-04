@@ -9,6 +9,8 @@ export interface Component {
     props: any;
     // 子组件
     children?: Component[];
+    // 父组件id
+    parentId?: number;
 }
 
 export type ItemType = "Button" | "Space";
