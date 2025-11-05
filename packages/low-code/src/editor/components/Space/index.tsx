@@ -6,7 +6,8 @@ import { useDrop } from "react-dnd";
 
 
 export default function Space(props: SpaceProps): React.ReactElement { 
-    const { id, children, ...rest } = props;
+    const { id, children, size = 'middle', ...rest } = props;
+    console.log("🚀 ~ Space ~ rest:", rest)
     const [{ canDrop }, drop] = useDrop({
         accept: [ItemTypes.BUTTON, ItemTypes.SPACE],
         drop: (_, monitor) => { 
@@ -25,14 +26,14 @@ export default function Space(props: SpaceProps): React.ReactElement {
     });
     if(children && children instanceof Array && children.length === 0 || !children) {
         return (
-            <AntdSpace className="p-4" style={{border: canDrop ? '1px dashed #ccc' : ''}} ref={drop as unknown as React.Ref<HTMLDivElement>} {...rest}>
-                暂无内容
+            <AntdSpace size={size} className="p-4" style={{border: canDrop ? '1px dashed #ccc' : ''}} ref={drop as unknown as React.Ref<HTMLDivElement>} {...rest} >
+               --暂无内容--
             </AntdSpace>
         );
     }
 
     return (
-        <AntdSpace className="p-4" style={{border: canDrop ? '1px dashed #ccc' : ''}} ref={drop as unknown as React.Ref<HTMLDivElement>} {...rest}>
+        <AntdSpace size={size} className="p-4" style={{border: canDrop ? '1px dashed #ccc' : ''}} ref={drop as unknown as React.Ref<HTMLDivElement>} {...rest}>
             {children}
         </AntdSpace>
     );

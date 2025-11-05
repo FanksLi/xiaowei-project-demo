@@ -16,8 +16,8 @@ export default function Layout(): React.ReactElement {
         <Allotment.Pane>
           <Stage className="flex-1 h-full" />
         </Allotment.Pane>
-        <Allotment.Pane minSize={200} maxSize={400} preferredSize={200}>
-          <Setting className="bg-amber-300 h-full" />
+        <Allotment.Pane minSize={400} maxSize={600} preferredSize={200}>
+          <Setting className=" h-full" />
         </Allotment.Pane>
       </Allotment>
     </div>

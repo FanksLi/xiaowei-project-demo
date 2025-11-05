@@ -33,7 +33,7 @@ export default function HoverMask(props: Props): React.ReactElement | null {
     toolLeft: 0,
     toolTop: 0,
   });
-  console.log("🚀 ~ HoverMask ~ position:", position)
+  // console.log("🚀 ~ HoverMask ~ position:", position)
 
   useEffect(() => {
     handleUpdatePosition();

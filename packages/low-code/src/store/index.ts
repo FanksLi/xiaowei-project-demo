@@ -1,6 +1,7 @@
 import { create } from 'zustand'
 import { type Component } from '@/@types';
 import { getComponent } from '@/utils';
+import { ItemTypes } from '@/editor/Layout/item-types';
 
 interface Store {
     components: Component[];
@@ -8,12 +9,22 @@ interface Store {
     currentComponent: Component | null;
     addComponent: (element: Component, parentId?: number) => void;
     setCurrentComponent: (id: number | null) => void;
+    updateAttributes: (id: number, attributes: Record<string, any>) => void;
 }
 
 
 export const useStore = create<Store>(
     (set) => ({
-        components: [],
+        components: [
+            {
+                id: 1,
+                name: ItemTypes.PAGE,
+                props: {
+                },
+                children: [
+                ],
+            }
+        ],
         currentComponentId: null,
         currentComponent: null,
         addComponent: (element: Component, parentId?: number) =>
@@ -52,11 +63,20 @@ export const useStore = create<Store>(
                     return { ...state };
                 }
                 const component = getComponent(id, state.components);
-                if(component) {
+                if (component) {
                     state.currentComponent = component;
                     state.currentComponentId = id;
                 }
                 return { ...state };
             }),
+        updateAttributes: (id: number, attributes: Record<string, any>) => {
+            set((state) => {
+                const component = getComponent(id, state.components);
+                if (component) {
+                    component.props = { ...component.props, ...attributes };
+                }
+                return { ...state, components: [...state.components] };
+            })
+        },
     })
 )

@@ -16,7 +16,6 @@ interface Postion {
 }
  function Mask(props: Props, ref: any): React.ReactElement | null {
   const { className, componentId, targetClassName } = props;
-  console.log("🚀 ~ Mask ~ componentId:", componentId)
   const maskRef = useRef<HTMLDivElement>(null);
   const [position, setPosition] = useState<Postion>({
     left: 0,
