@@ -1,0 +1,98 @@
+import React, { useEffect, useRef, useState } from "react";
+import { useStore } from "@/store";
+import { Mask, HoverMask } from "@/editor/common";
+import { renderComponents } from "@/utils";
+
+interface Props {
+  className?: string;
+}
+
+
+export default function Edit(props: Props): React.ReactElement {
+  const { className } = props;
+  const { components, currentComponentId, setCurrentComponent } = useStore();
+//   console.log("🚀 ~ Stage ~ components:", components);
+  const maskRef: any = useRef(null);
+  const [hoverId, setHoverId] = useState<number | null>(null);
+
+
+  useEffect(() => {
+    maskRef.current?.updatePosition?.();
+  }, [components]);
+
+  useEffect(() => {
+    const container = document.querySelector(".stage");
+    container?.addEventListener("click", hanldeClick, true);
+    return () => {
+      container?.removeEventListener("click", hanldeClick, true);
+    };
+  }, [currentComponentId]);
+  useEffect(() => {
+    const container = document.querySelector(".stage");
+
+    // 添加鼠标移入事件
+    container?.addEventListener("mouseover", handleMouseOver, true);
+    container?.addEventListener("mouseout", handleMouseout);
+    return () => {
+      container?.removeEventListener("mouseover", handleMouseOver, true);
+      container?.removeEventListener("mouseout", handleMouseout);
+    };
+  }, [currentComponentId]);
+  function getComponentId(paths: any[]): number | null {
+    for (let i = 0; i < paths.length; i++) {
+      const ele = paths[i];
+      if (ele.getAttribute) {
+        if (ele.getAttribute("data-component-id")) {
+          const componentId = ele.getAttribute("data-component-id");
+          return Number(componentId);
+        }
+      }
+    }
+    return null;
+  }
+
+  function handleMouseOver(e: any) {
+    const paths = e.composedPath();
+
+    const id = getComponentId(paths);
+    if (currentComponentId === null || id !== currentComponentId) {
+      setHoverId(id);
+    } else {
+      setHoverId(null);
+    }
+  }
+
+  function handleMouseout() {
+    setHoverId(null);
+  }
+
+  function hanldeClick(e: any) {
+    const paths = e.composedPath();
+    const id = getComponentId(paths);
+    // console.log("🚀 ~ handleClick ~ id:", id, paths);
+    if (id !== null && id !== currentComponentId) {
+      setCurrentComponent(id);
+    } else {
+      setCurrentComponent(null);
+    }
+  }
+  return (
+    <div className={`${className} stage`}>
+      {renderComponents(components)}
+      <Mask
+        componentId={currentComponentId}
+        containerClassName="stage"
+        targetClassName="mask-container"
+        ref={maskRef}
+      />
+      {hoverId !== null ? (
+        <HoverMask
+          hoverId={hoverId}
+          containerClassName="stage"
+          targetClassName="mask-container"
+        />
+      ) : null}
+      <div className="mask-container"></div>
+    </div>
+  );
+}

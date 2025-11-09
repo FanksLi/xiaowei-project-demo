@@ -1,6 +1,7 @@
 import { Segmented } from "antd";
 import { useState } from "react";
 import Attribute from "./Attribute";
+import BindEvent from "./BindEvent";
 
 interface Props {
     className?: string;
@@ -8,7 +9,7 @@ interface Props {
 
 const options = [
     { label: '属性', value: 1 },
-    { label: '样式', value: 2 },
+    { label: '事件', value: 2 },
 ];
 export default function Setting(props: Props): React.ReactElement { 
     const { className } = props;
@@ -21,6 +22,7 @@ export default function Setting(props: Props): React.ReactElement {
         <Segmented options={options} block onChange={handleChange} value={active} />
         <div>
             {active === 1 ? <Attribute /> : null}
+            {active === 2 ? <BindEvent /> : null}
         </div>
     </div>
 }

@@ -26,7 +26,6 @@ export default function Button(props: AntuttonProps): React.ReactElement {
     //     }),
     // });
   
-
     return (
         <AntButton id={id} {...rest}>
             {text || children}

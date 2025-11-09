@@ -7,9 +7,12 @@ interface Store {
     components: Component[];
     currentComponentId: number | null;
     currentComponent: Component | null;
+    mode: 'edit' | 'preview';
+    setMode: (mode: 'edit' | 'preview') => void;
     addComponent: (element: Component, parentId?: number) => void;
     setCurrentComponent: (id: number | null) => void;
     updateAttributes: (id: number, attributes: Record<string, any>) => void;
+    updateEventConfig: (id: number, eventName: string, eventConfig: Record<string, any>) => void;
 }
 
 
@@ -27,6 +30,13 @@ export const useStore = create<Store>(
         ],
         currentComponentId: null,
         currentComponent: null,
+        mode: 'edit',
+        setMode: (mode: 'edit' | 'preview') => {
+            set((state) => ({
+                ...state,
+                mode,
+            }))
+        },
         addComponent: (element: Component, parentId?: number) =>
             set((state) => {
                 function updateChildren(components: Component[], pareentId: number) {
@@ -78,5 +88,14 @@ export const useStore = create<Store>(
                 return { ...state, components: [...state.components] };
             })
         },
+        updateEventConfig: (id: number, eventName: string, eventConfig: Record<string, any> = {}) => {
+            set((state) => {
+                const component = getComponent(id, state.components);
+                if (component) {
+                    component.props[eventName] = { ...component.props[eventName], ...eventConfig};
+                }
+                return { ...state, components: [...state.components] };
+            })
+        }
     })
 )
