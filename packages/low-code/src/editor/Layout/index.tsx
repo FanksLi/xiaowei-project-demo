@@ -7,19 +7,22 @@ import "allotment/dist/style.css";
 import { useStore } from "@/store";
 import Preview from "./stage/Preview";
 import TreeDrawer from "./components/TreeDrawer";
+import VariableModal from "@/editor/common/Modals/VariableModal";
 import { useState } from "react";
 
 export default function Layout(): React.ReactElement {
   const { mode } = useStore();
   const [open, setOpen] = useState(false);
+  const [openVariable, setOpenVariable] = useState(false);
 
   function handleOpen(v: boolean) { 
     setOpen(v);
   }
 
+
   return (
     <div className="h-full w-full flex flex-col">
-      <Header className="h-[60px] border-b border-solid border-b-[#ccc]" open={open} handleOpen={handleOpen}/>
+      <Header className="h-[60px] border-b border-solid border-b-[#ccc]" open={open} handleOpen={handleOpen} openVariable={() => setOpenVariable(true)} />
       {mode === "edit" ? (
         <>
           <Allotment className="flex-1 flex h-full">
@@ -39,6 +42,7 @@ export default function Layout(): React.ReactElement {
       )}
 
       <TreeDrawer open={open} handleOpen={handleOpen} />
+      <VariableModal open={openVariable} onClose={() => setOpenVariable(false)} onOk={() => setOpenVariable(false)} />
     </div>
   );
 }

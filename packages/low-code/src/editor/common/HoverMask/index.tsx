@@ -86,7 +86,6 @@ export default function HoverMask(props: Props): React.ReactElement | null {
         top: position.top,
         width: position.width,
         height: position.height,
-        backgroundColor: "rgba(0, 0, 0, 0.1)",
       }}
     >
        

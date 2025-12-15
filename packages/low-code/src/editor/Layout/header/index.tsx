@@ -5,10 +5,11 @@ interface Props {
   className?: string;
   handleOpen: (v: boolean) => void;
   open: boolean;
+  openVariable?: () => void;
 }
 
 export default function Header(props: Props): React.ReactElement {
-  const { className, handleOpen, open } = props;
+  const { className, handleOpen, open, openVariable } = props;
   const { mode, setMode } = useStore();
 
   function handleClick(type: string) {
@@ -26,6 +27,7 @@ export default function Header(props: Props): React.ReactElement {
           <Space>
             <Button onClick={() => handleClick('preview')}>预览</Button>
             <Button onClick={() => handleOpen(!open)}>层级树</Button>
+            <Button onClick={openVariable}>添加变量</Button>
           </Space>
         ) : (
           <div>
