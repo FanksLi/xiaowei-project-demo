@@ -63,6 +63,10 @@ export default function VariableModalContent(props: Props) {
                   style={{ display: "flex", marginBottom: 8, justifyContent: "space-between" }}
                   align="baseline"
                 >
+                  {/* 隐藏的id字段 */}
+                  <Form.Item {...restField} name={[name, "id"]} noStyle>
+                    <Input type="hidden" />
+                  </Form.Item>
                   <Form.Item
                     {...restField}
                     name={[name, "name"]}

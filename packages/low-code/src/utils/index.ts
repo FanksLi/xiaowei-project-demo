@@ -31,24 +31,86 @@ interface Options {
 }
 export function renderComponents(
   components: Component[] | undefined,
-  options?: Options
+  options?: Options,
+  type: string = 'editor'
 ): React.ReactNode {
   if (!components) return null;
-  const { handleEvent } = options || {};
+
+
+
   return components.map((item: Component) => {
-    return React.createElement(
-      componentMap[item.name],
-      {
-        ...item.props,
-        key: item.id,
-        "data-component-id": item.id,
-        id: item.id,
-        ...handleEvent?.(item)
-      },
-      item.props.children || renderComponents(item.children, options)
-    );
+    if (type === 'editor') {
+      return renderEditorComponent(item, options, type);
+    } else {
+      return renderPreviewComponent(item, options, type);
+    }
   });
 }
+
+function renderPreviewComponent(item: Component, options?: Options, type?: string) {
+  const newProps: any = {};
+  const { handleEvent } = options || {};
+
+  Object.keys(item.props).forEach((key) => {
+    if (typeof item.props[key] === "object") {
+      if (item.props[key].type === "variable") {
+        newProps[key] = item.props[key].value;
+      } else if (item.props[key].type === "static") {
+        newProps[key] = item.props[key].value;
+      } else {
+        newProps[key] = item.props[key];
+      }
+    } else {
+      newProps[key] = item.props[key];
+    }
+  });
+  return React.createElement(
+    componentMap[item.name],
+    {
+      ...newProps,
+      key: item.id,
+      "data-component-id": item.id,
+      id: item.id,
+      ...handleEvent?.(item)
+    },
+    item.props.children || renderComponents(item.children, options, type)
+  );
+}
+
+function renderEditorComponent(item: Component, options?: Options, type?: string) {
+  if (!item) return null;
+  const { handleEvent } = options || {};
+
+  const newProps: any = {};
+  Object.keys(item.props).forEach((key) => {
+    if (typeof item.props[key] === "object") {
+      if (item.props[key].type === "variable") {
+        newProps[key] = `$\{${item.props[key].key}}`;
+      } else if (item.props[key].type === "static") {
+        newProps[key] = item.props[key].value;
+      } else {
+        newProps[key] = item.props[key];
+      }
+    } else {
+      newProps[key] = item.props[key];
+    }
+  });
+  return React.createElement(
+    componentMap[item.name],
+    {
+      ...newProps,
+      key: item.id,
+      "data-component-id": item.id,
+      id: item.id,
+      ...handleEvent?.(item)
+    },
+    item.props.children || renderComponents(item.children, options, type)
+  );
+}
+
+
+
+
 
 
 export const eventMaps: { [key: string]: any } = {

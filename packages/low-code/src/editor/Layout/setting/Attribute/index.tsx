@@ -1,7 +1,8 @@
 import { useStore } from "@/store";
 import { ItemTypes } from "@/editor/Layout/item-types";
-import { Form, Select, Input } from "antd";
+import { Form, Select } from "antd";
 import { useEffect } from "react";
+import SettingFormItem from "@/editor/common/SettingFormItem";
 
 interface Props {
   className?: string;
@@ -101,7 +102,7 @@ export default function Attribute(props: Props): React.ReactElement {
   function renderItem(item: any) {
     switch (item.type) {
       case "input":
-        return <Input />;
+        return <SettingFormItem />;
       case "select":
         return (
           <Select>

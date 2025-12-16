@@ -5,6 +5,7 @@ interface Variable {
     type: string;
     defaultValue: string;
     remark: string;
+    id: string;
 }
 
 interface Actions {

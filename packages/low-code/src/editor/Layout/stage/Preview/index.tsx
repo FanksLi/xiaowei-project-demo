@@ -29,7 +29,7 @@ export default function Preview() {
   }
   return (
     <div className="h-full w-full">
-      {renderComponents(components, { handleEvent })}
+      {renderComponents(components, { handleEvent }, "preview")}
       {contextHolder}
     </div>
   );
